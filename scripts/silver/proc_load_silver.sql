@@ -45,7 +45,7 @@ BEGIN TRY
 			 ELSE 'n/a'
 			 END cst_gndr,
 			 cst_create_date
-		FROM (SELECT*, ROW_NUMBER() OVER (PARTITION BY  cst_id ORDER BY cst_create_date DESC ) as flag_last FROM bronze.crm_cust_info)t
+		FROM (SELECT*, ROW_NUMBER() OVER (PARTITION BY  cst_id ORDER BY cst_create_date DESC ) as flag_last FROM bronze.crm_cust_info WHERE cst_id IS NOT NULL)t
 		WHERE flag_last = 1
 		SET @end_time = GETDATE(); 
 		PRINT'>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + 'seconds'; 
